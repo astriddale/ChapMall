@@ -1,14 +1,14 @@
 <template>
-
+  <h1>Home</h1>
 </template>
 
 <script>
 export default {
-  name: "App",
-  components: {},
+  name: "Home"
 };
 </script>
 
 <style>
-@import "@/assets/css/base";
+
+
 </style>
