@@ -1,12 +1,13 @@
 <template>
-  <div id="home">
+  <div id="cart">
+
   </div>
 </template>
 
 <script>
 
-  export default {
-		name: "Home"
+	export default {
+		name: "Cart"
 	}
 </script>
 

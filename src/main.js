@@ -1,13 +1,16 @@
-import { createApp } from 'vue'
+import Vue from 'vue'
 import App from './App.vue'
+import router from './router'
+// import VueLazyLoad from 'vue-lazyload'
 
-createApp(App).mount('#app')
+Vue.config.productionTip = false
 
-// new Vue({
-//   el: '#app',
-//   router,
-//   store,
-//   render: (h)=>{
-//     h(app)
-//   }
+// Vue.use(VueLazyLoad, {
+//   preLoad: 1,
+//   loading: require('assets/img/common/placeholder.png')
 // })
+
+new Vue({
+  render: h => h(App),
+  router
+}).$mount('#app')
