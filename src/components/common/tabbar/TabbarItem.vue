@@ -18,7 +18,7 @@ export default {
     },
     textActive: {
       type: String,
-      default: "rgb(240,60,160)",
+      default: "#ff5777",
     }
   },
   computed: {
