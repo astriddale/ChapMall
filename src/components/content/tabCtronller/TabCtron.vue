@@ -43,6 +43,7 @@ export default {
   text-align: center;
   margin: 10px 0px;
   background-color: #fff;
+  line-height: 40px;
 }
 .tab-ctron-item {
   flex: 1;
