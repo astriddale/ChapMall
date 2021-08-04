@@ -1,5 +1,7 @@
 <template>
+  <!-- 定义app上方标签 -->
   <div class="nav-bar">
+    <!-- 使用具名插槽的方式 -->
     <div class="left"><slot name="left"></slot></div>
     <div class="center"><slot name="center"></slot></div>
     <div class="right"><slot name="right"></slot></div>

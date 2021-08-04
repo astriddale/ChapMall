@@ -4,10 +4,9 @@
       <div slot="center">查派商城</div>
     </nav-bar>
     <homeSwiper :banners="banners" />
-    <recommend :recommend="recommend"/>
+    <recommend :recommend="recommend" />
     <feature-view />
-
-
+    <tab-ctron :titles="['流行', '新款', '精选']" />
 
     <ul>
       <li>liebiao1</li>
@@ -115,47 +114,63 @@
 </template>
 
 <script>
+//导入组件
 import NavBar from "components/common/navbar/Navbar";
 import HomeSwiper from "./childComponents/HomeSwiper";
+import TabCtron from "components/content/tabCtronller/TabCtron";
+
 import Recommend from "./childComponents/Recommend";
 import FeatureView from "./childComponents/FeatureView";
 
-import { getHomeMultidata } from "network/home";
+import { getHomeMultidata, getHomeGoods } from "network/home";
 
 export default {
   name: "Home",
   data() {
     return {
+      //自定义数据类型
       data: [],
       banners: [],
       dKeyword: [],
       keywords: [],
       recommend: [],
+      data1:{},
+      goods: {
+        'pop': { page: 0, list: [] },
+        'news': { page: 0, list: [] },
+        'sell': { page: 0, list: [] }
+      },
     };
   },
   components: {
     NavBar,
     HomeSwiper,
+    TabCtron,
+
     Recommend,
-    FeatureView
+    FeatureView,
   },
+  //在生命周期函数中（即组件创建的时候）获取数据
   created() {
+    //获取首页轮播图等数据
     getHomeMultidata().then((res) => {
       this.data = res.data.data;
       this.banners = res.data.data.banner.list;
       this.dKeyword = res.data.data.dKeyword.list;
       this.keywords = res.data.data.keywords.list;
       this.recommend = res.data.data.recommend.list;
+    });
+    //获取商品数据
+    getHomeGoods('sell', 1).then(res=>{
+      this.data1 = res
     })
   },
-  methods: {
-    
-  }
+  methods: {},
 };
 </script>
 
 <style scoped>
-#home{
+#home {
   padding-top: 44px;
 }
 .nav-bar {
