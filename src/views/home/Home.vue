@@ -6,8 +6,12 @@
     <homeSwiper :banners="banners" />
     <recommend :recommend="recommend" />
     <feature-view />
-    <tab-ctron :titles="['流行', '新款', '精选']" class="tab-ctron" />
-    <goods-list :goods-list="goods['pop'].list" />
+    <tab-ctron
+      :titles="['流行', '新款', '精选']"
+      class="tab-ctron"
+      @itemClick="itemClick"
+    />
+    <goods-list :goods-list="goodsType" />
 
     <ul>
       <li>liebiao1</li>
@@ -26,6 +30,8 @@ import HomeSwiper from "./childComponents/HomeSwiper";
 import TabCtron from "components/content/tabCtronller/TabCtron";
 import GoodsList from "components/content/goods/GoodsList";
 
+import { POP, NEW, SELL } from "common/const.js";
+
 //导入子组件
 import Recommend from "./childComponents/Recommend";
 import FeatureView from "./childComponents/FeatureView";
@@ -37,6 +43,9 @@ export default {
   name: "Home",
   data() {
     return {
+      // 用来保存当前首页显示的商品类型
+      currentType: POP,
+
       //自定义数据类型
       data: [],
       banners: [],
@@ -44,10 +53,11 @@ export default {
       keywords: [],
       recommend: [],
 
+      //用来保存商品数据
       goods: {
-        'pop': { page: 1, list: [] },
-        'new': { page: 1, list: [] },
-        'sell': { page: 1, list: [] },
+        pop: { page: 1, list: [] },
+        new: { page: 1, list: [] },
+        sell: { page: 1, list: [] },
       },
     };
   },
@@ -65,12 +75,27 @@ export default {
     //获取首页轮播图等数据
     this.getHomeMultidata();
     //获取商品数据
-    this.getHomeGoods("pop");
+    this.getHomeGoods(POP);
+    this.getHomeGoods(NEW);
+    this.getHomeGoods(SELL);
   },
   methods: {
     /**
      * 其他事件的方法
      */
+    itemClick(index) {
+      switch (index) {
+        case 0:
+          this.currentType = POP;
+          break;
+        case 1:
+          this.currentType = NEW;
+          break;
+        case 2:
+          this.currentType = SELL;
+          break;
+      }
+    },
 
     /**
      * 网络请求相关的方法
@@ -90,6 +115,12 @@ export default {
         this.goods[type].list.push(...goodslist);
         this.goods[type].page += 1;
       });
+    },
+  },
+  computed: {
+    // 用来决定商品类型
+    goodsType() {
+      return this.goods[this.currentType].list
     },
   },
 };

@@ -30,7 +30,11 @@ export default {
   },
   methods: {
     itemClick(index) {
+      // 改变currentIndex的值
       this.currentIndex = index;
+
+      // 发出itemClick事件
+      this.$emit("itemClick", index);
     },
   },
 };
