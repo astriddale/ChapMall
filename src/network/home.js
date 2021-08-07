@@ -11,6 +11,12 @@ export function getHomeMultidata() {
 
 export function getHomeGoods(type, page) {
   return request({
-    url: '/home/data?type=' + type + '&page=' + page
+    // url: '/home/data?type=' + type + '&page=' + page
+    // 或者使用这种方法
+    url: '/home/data',
+    params: {
+      type,
+      page
+    }
   })
 }

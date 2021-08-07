@@ -3,23 +3,35 @@
     <nav-bar class="nav-bar">
       <div slot="center">查派商城</div>
     </nav-bar>
-    <homeSwiper :banners="banners" />
-    <recommend :recommend="recommend" />
-    <feature-view />
     <tab-ctron
       :titles="['流行', '新款', '精选']"
-      class="tab-ctron"
       @itemClick="itemClick"
+      ref="tabctron1"
+      v-show="isShowTab"
+      class="tab-show"
     />
-    <goods-list :goods-list="goodsType" />
+    <scroll
+      class="content"
+      :probe-type="3"
+      :pulling-up-load="true"
+      @scrollTo="scroll"
+      @pullingUp="loadMore"
+      ref="scroll"
+    >
+      <div>
+        <homeSwiper :banners="banners" @imgLoad="imgLoad" />
+        <recommend :recommend="recommend" />
+        <feature-view />
+        <tab-ctron
+          :titles="['流行', '新款', '精选']"
+          @itemClick="itemClick"
+          ref="tabctron"
+        />
+        <goods-list :goods-list="goodsType" />
+      </div>
+    </scroll>
 
-    <ul>
-      <li>liebiao1</li>
-      <li>liebiao97</li>
-      <li>liebiao98</li>
-      <li>liebiao99</li>
-      <li>liebiao100</li>
-    </ul>
+    <back-top @click.native="scrollTo" v-show="isShow"></back-top>
   </div>
 </template>
 
@@ -29,8 +41,13 @@ import NavBar from "components/common/navbar/Navbar";
 import HomeSwiper from "./childComponents/HomeSwiper";
 import TabCtron from "components/content/tabCtronller/TabCtron";
 import GoodsList from "components/content/goods/GoodsList";
+import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/backTop/BackTop.vue";
 
+// 导入自定义的常量
 import { POP, NEW, SELL } from "common/const.js";
+// 导入防抖函数
+import { deBounce } from "common/util/deBounce";
 
 //导入子组件
 import Recommend from "./childComponents/Recommend";
@@ -45,6 +62,9 @@ export default {
     return {
       // 用来保存当前首页显示的商品类型
       currentType: POP,
+      isShow: false,
+      tabOffsetTop: 0,
+      isShowTab: false,
 
       //自定义数据类型
       data: [],
@@ -66,7 +86,8 @@ export default {
     HomeSwiper,
     TabCtron,
     GoodsList,
-
+    Scroll,
+    BackTop,
     Recommend,
     FeatureView,
   },
@@ -78,6 +99,13 @@ export default {
     this.getHomeGoods(POP);
     this.getHomeGoods(NEW);
     this.getHomeGoods(SELL);
+  },
+  mounted() {
+    // console.log(this.$refs.scroll.refresh)
+    const refresh = deBounce(this.$refs.scroll.refresh, 200);
+    this.$bus.$on("itemImgLoad", () => {
+      refresh();
+    });
   },
   methods: {
     /**
@@ -95,6 +123,30 @@ export default {
           this.currentType = SELL;
           break;
       }
+      // this.$refs.tabctron.index = index;
+      // 把当前点击的index给tabctron（下面）的currentIndex，改变他的值
+      this.$refs.tabctron.currentIndex=index;
+      // console.log(index)
+       // 把当前点击的index给tabctron1（上面）的currentIndex，改变他的值
+      this.$refs.tabctron1.currentIndex = index;
+    },
+    scroll(position) {
+      // 设置下移到指定位置时出现backtop组件
+      this.isShow = -position.y > 1100;
+      // console.log(-position.y);
+      this.isShowTab = -position.y > this.tabOffsetTop;
+      // console.log(this.isShowTab)
+    },
+    scrollTo() {
+      this.$refs.scroll.scrollTo(0, 0);
+    },
+    loadMore() {
+      this.getHomeGoods(this.currentType);
+      console.log("数据加载中~~~");
+    },
+    imgLoad() {
+      this.tabOffsetTop = this.$refs.tabctron.$el.offsetTop;
+      // console.log(this.tabOffsetTop);
     },
 
     /**
@@ -114,13 +166,14 @@ export default {
         const goodslist = res.data.data.list;
         this.goods[type].list.push(...goodslist);
         this.goods[type].page += 1;
+        this.$refs.scroll.finishPullUp();
       });
     },
   },
   computed: {
     // 用来决定商品类型
     goodsType() {
-      return this.goods[this.currentType].list
+      return this.goods[this.currentType].list;
     },
   },
 };
@@ -128,22 +181,35 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 44px;
+  /* 因为下面的conteng属性设置了绝对定位距离上方44，所以padding属性就没必要使用了 */
+  /* padding-top: 44px; */
+  height: 100vh;
+  position: relative;
 }
 .nav-bar {
   background-color: var(--color-tint);
   color: white;
   font-size: 17px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
 }
-.tab-ctron {
-  position: sticky;
+
+.content {
+  position: absolute;
   top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+}
+.tab-show {
+  position: relative;
+  left: 0;
+  top: 0;
+  right: 0;
   z-index: 10;
 }
 </style>

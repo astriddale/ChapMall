@@ -2,7 +2,7 @@
   <!-- 封装商品数据 -->
   <div class="goods">
     <a :href="goods.link">
-      <img :src="goods.show.img" alt="" />
+      <img :src="goods.show.img" alt="" @load="itemImgLoad" />
       <div class="goods-info">
         <p class="title">{{ goods.title }}</p>
         <span class="price">￥{{ goods.price }}</span>
@@ -19,6 +19,11 @@ export default {
     goods: {
       type: Object,
       default: {},
+    },
+  },
+  methods: {
+    itemImgLoad() {
+      this.$bus.$emit("itemImgLoad");
     },
   },
 };

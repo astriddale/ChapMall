@@ -33,7 +33,7 @@ export default {
       // 改变currentIndex的值
       this.currentIndex = index;
 
-      // 发出itemClick事件
+      // 发出itemClick事件,将当前点击的下标值传出去并且改变页面
       this.$emit("itemClick", index);
     },
   },
@@ -45,9 +45,10 @@ export default {
   display: flex;
   font-size: 16px;
   text-align: center;
-  margin: 10px 0px;
+  /* margin: 10px 0px; */
   background-color: #fff;
   line-height: 40px;
+  padding-bottom: 5px;
 }
 .tab-ctron-item {
   flex: 1;
