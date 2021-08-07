@@ -65,6 +65,7 @@ export default {
       isShow: false,
       tabOffsetTop: 0,
       isShowTab: false,
+      positionY: 0,
 
       //自定义数据类型
       data: [],
@@ -91,6 +92,7 @@ export default {
     Recommend,
     FeatureView,
   },
+
   //在生命周期函数中（即组件创建的时候）获取数据
   created() {
     //获取首页轮播图等数据
@@ -100,6 +102,7 @@ export default {
     this.getHomeGoods(NEW);
     this.getHomeGoods(SELL);
   },
+
   mounted() {
     // console.log(this.$refs.scroll.refresh)
     const refresh = deBounce(this.$refs.scroll.refresh, 200);
@@ -107,6 +110,19 @@ export default {
       refresh();
     });
   },
+
+  activated() {
+    // 进入当前页面时就调用scroll组件的scrollTo函数跳到之前的位置
+    this.$refs.scroll.scrollTo(0, this.positionY, 0);
+    // 重新刷新一次，计算高度
+    this.$refs.scroll.refresh();
+  },
+  deactivated() {
+    // this.positionY = this.$refs.scroll.position.y;
+    // 在这里获取到Bscroll对象的y的值
+    this.positionY = this.$refs.scroll.scroll.y;
+  },
+
   methods: {
     /**
      * 其他事件的方法
@@ -125,9 +141,9 @@ export default {
       }
       // this.$refs.tabctron.index = index;
       // 把当前点击的index给tabctron（下面）的currentIndex，改变他的值
-      this.$refs.tabctron.currentIndex=index;
+      this.$refs.tabctron.currentIndex = index;
       // console.log(index)
-       // 把当前点击的index给tabctron1（上面）的currentIndex，改变他的值
+      // 把当前点击的index给tabctron1（上面）的currentIndex，改变他的值
       this.$refs.tabctron1.currentIndex = index;
     },
     scroll(position) {

@@ -1,14 +1,12 @@
 <template>
   <!-- 封装商品数据 -->
-  <div class="goods">
-    <a :href="goods.link">
-      <img :src="goods.show.img" alt="" @load="itemImgLoad" />
-      <div class="goods-info">
-        <p class="title">{{ goods.title }}</p>
-        <span class="price">￥{{ goods.price }}</span>
-        <span class="cfav">{{ goods.cfav }}</span>
-      </div>
-    </a>
+  <div class="goods" @click="detailClick">
+    <img :src="goods.show.img" alt="" @load="itemImgLoad" />
+    <div class="goods-info">
+      <p class="title">{{ goods.title }}</p>
+      <span class="price">￥{{ goods.price }}</span>
+      <span class="cfav">{{ goods.cfav }}</span>
+    </div>
   </div>
 </template>
 
@@ -25,13 +23,17 @@ export default {
     itemImgLoad() {
       this.$bus.$emit("itemImgLoad");
     },
+    detailClick() {
+      // console.log(this.goods)r
+      this.$router.push('/detail/' + this.goods.iid)
+    },
   },
 };
 </script>
 
 <style scoped>
 .goods {
-  padding-bottom: 40px;
+  padding-bottom: 60px;
   position: relative;
   width: 28%;
 }
@@ -39,15 +41,15 @@ export default {
 .goods img {
   width: 100%;
   border-radius: 10px;
-  height: 180px;
+  /* height: 180px; */
 }
 
 .goods-info {
-  font-style: 14px;
+  font-style: 13px;
   color: #333;
   position: absolute;
   overflow: hidden;
-  bottom: 5px;
+  bottom: 15px;
   left: 0;
   right: 0;
   text-align: center;
@@ -64,7 +66,7 @@ export default {
 
 .goods-info .price {
   color: var(--color-high-text);
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
 .goods-info .cfav {
