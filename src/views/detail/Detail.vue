@@ -6,6 +6,8 @@
       <detail-info :detailGoods="detailGoods" />
       <detail-shop :shopInfo="shopInfo" />
       <detail-image-info :detailInfo="detailInfo" @imgLoad="imgLoad" />
+      <detail-params :itemParams="itemParams" />
+      <detail-rate :rateInfo="rateInfo" />
     </scroll>
   </div>
 </template>
@@ -17,6 +19,8 @@ import DetailSwiper from "./childComps/DetailSwiper";
 import DetailInfo from "./childComps/DetailInfo.vue";
 import DetailShop from "./childComps/DetailShop.vue";
 import DetailImageInfo from "./childComps/DetailImageInfo.vue";
+import DetailParams from "./childComps/DetailParams.vue";
+import DetailRate from "./childComps/DetailRate.vue";
 
 // 导入Bscroll组件
 import Scroll from "components/common/scroll/Scroll";
@@ -26,6 +30,8 @@ import {
   getDetailMultidata,
   DetailGoods,
   DetailShopGoods,
+  DetailParamsInfo,
+  DetailRateInfo,
 } from "network/detail.js";
 
 export default {
@@ -36,6 +42,8 @@ export default {
       detailGoods: {},
       shopInfo: {},
       detailInfo: {},
+      itemParams: {},
+      rateInfo: {},
     };
   },
   components: {
@@ -45,6 +53,8 @@ export default {
     DetailShop,
     DetailImageInfo,
     Scroll,
+    DetailParams,
+    DetailRate,
   },
   methods: {
     getDetailMultidata() {
@@ -65,7 +75,23 @@ export default {
 
         // 传入商品详细信息
         this.detailInfo = data.detailInfo;
-        console.log(data.detailInfo);
+
+        // 传入参数信息
+        this.itemParams = new DetailParamsInfo(
+          data.itemParams.info,
+          data.itemParams.rule
+        );
+
+        // 传入评论信息
+        if (data.rate.list) {
+          this.rateInfo = new DetailRateInfo(
+            data.rate.list[0],
+            data.rate.list[0].user
+          );
+        }
+        // console.log(this.rateInfo);
+        // console.log(data.rate);
+        // console.log(data.rate.list[0])
       });
     },
     imgLoad() {

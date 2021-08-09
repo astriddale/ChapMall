@@ -7,6 +7,7 @@
       <span
         class="discountDesc"
         :style="{ backgroundColor: detailGoods.discountBgColor }"
+        v-show="detailGoods.discountDesc === '' ? false : true"
         >{{ detailGoods.discountDesc }}</span
       >
     </div>
@@ -34,6 +35,10 @@ export default {
       type: Object,
       default: {},
     },
+  },
+  data() {
+    return {
+    };
   },
 };
 </script>

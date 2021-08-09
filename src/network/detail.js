@@ -12,6 +12,7 @@ export function getDetailMultidata(iid) {
   })
 }
 
+// 封装了详情页数据的类
 export class DetailGoods {
   constructor(itemInfo, columns, shopInfo) {
     this.price = itemInfo.price;
@@ -25,7 +26,7 @@ export class DetailGoods {
   }
 }
 
-
+// 店铺信息数据
 export class DetailShopGoods {
   constructor(shopInfo) {
     this.name = shopInfo.name;
@@ -33,5 +34,26 @@ export class DetailShopGoods {
     this.score = shopInfo.score;
     this.cSells = shopInfo.cSells;
     this.cGoods = shopInfo.cGoods;
+  }
+}
+
+// 参数信息数据
+export class DetailParamsInfo {
+  constructor(info, rule) {
+    this.set = info.set;
+    this.tables = rule.tables;
+  }
+}
+
+// 评论信息数据
+export class DetailRateInfo {
+  constructor(list, user) {
+    this.content = list.content;
+    this.created = list.created;
+    this.extraInfo = list.extraInfo;
+    this.images = list.images;
+    this.style = list.style;
+    this.avatar = user.avatar;
+    this.uname = user.uname;
   }
 }

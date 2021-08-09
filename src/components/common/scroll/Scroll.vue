@@ -47,7 +47,6 @@ export default {
     //封装刷新函数
     refresh() {
       this.scroll && this.scroll.refresh();
-       console.log("refresh了")
     },
 
     // 封装结束刷新函数

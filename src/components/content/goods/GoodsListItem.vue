@@ -35,7 +35,7 @@ export default {
 .goods {
   padding-bottom: 60px;
   position: relative;
-  width: 28%;
+  width: 31%;
 }
 
 .goods img {
@@ -45,6 +45,7 @@ export default {
 }
 
 .goods-info {
+  height: 40px;
   font-style: 13px;
   color: #333;
   position: absolute;
@@ -67,6 +68,7 @@ export default {
 .goods-info .price {
   color: var(--color-high-text);
   margin-right: 15px;
+  margin-left: -10px;
 }
 
 .goods-info .cfav {
