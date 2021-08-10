@@ -12,6 +12,13 @@ export function getDetailMultidata(iid) {
   })
 }
 
+// 详情页推荐数据
+export function getDetailRecommend() {
+  return request({
+    url: '/recommend'
+  })
+}
+
 // 封装了详情页数据的类
 export class DetailGoods {
   constructor(itemInfo, columns, shopInfo) {

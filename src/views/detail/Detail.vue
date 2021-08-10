@@ -1,14 +1,17 @@
 <template>
   <div id="detail">
     <detail-nav-bar class="detail-nav-bar" />
-    <scroll class="content" ref="scroll">
+    <scroll class="content" ref="scroll" :probe-type="3" @scrollTo="scroll">
       <detail-swiper :topImg="topImg" />
       <detail-info :detailGoods="detailGoods" />
       <detail-shop :shopInfo="shopInfo" />
       <detail-image-info :detailInfo="detailInfo" @imgLoad="imgLoad" />
       <detail-params :itemParams="itemParams" />
       <detail-rate :rateInfo="rateInfo" />
+      <goods-list :goodsList="detailRecommend" />
     </scroll>
+
+    <back-top class="back-top" @click.native="backClick" v-show="isShow" />
   </div>
 </template>
 
@@ -21,6 +24,8 @@ import DetailShop from "./childComps/DetailShop.vue";
 import DetailImageInfo from "./childComps/DetailImageInfo.vue";
 import DetailParams from "./childComps/DetailParams.vue";
 import DetailRate from "./childComps/DetailRate.vue";
+import GoodsList from "components/content/goods/GoodsList";
+import BackTop from "components/content/backTop/BackTop.vue";
 
 // 导入Bscroll组件
 import Scroll from "components/common/scroll/Scroll";
@@ -32,7 +37,11 @@ import {
   DetailShopGoods,
   DetailParamsInfo,
   DetailRateInfo,
+  getDetailRecommend,
 } from "network/detail.js";
+
+// 导入防抖函数
+import { deBounce } from "common/util/deBounce";
 
 export default {
   name: "Detail",
@@ -44,6 +53,9 @@ export default {
       detailInfo: {},
       itemParams: {},
       rateInfo: {},
+      detailRecommend: [],
+      itemImgLisener: null,
+      isShow: false,
     };
   },
   components: {
@@ -55,6 +67,8 @@ export default {
     Scroll,
     DetailParams,
     DetailRate,
+    GoodsList,
+    BackTop,
   },
   methods: {
     getDetailMultidata() {
@@ -93,14 +107,37 @@ export default {
         // console.log(data.rate);
         // console.log(data.rate.list[0])
       });
+      getDetailRecommend().then((res) => {
+        this.detailRecommend = res.data.data.list;
+        // console.log(this.detailRecommend);
+      });
     },
     imgLoad() {
       this.$refs.scroll.refresh();
+    },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0, 500);
+    },
+    scroll(position) {
+      // 设置下移到指定位置时出现backtop组件
+      this.isShow = -position.y > 1100;
+      // console.log(-position.y);
     },
   },
   created() {
     // console.log(this.$route);
     this.getDetailMultidata();
+  },
+  mounted() {
+    // console.log(this.$refs.scroll.refresh)
+    this.itemImgLisener = () => {
+      refresh();
+    };
+    const refresh = deBounce(this.$refs.scroll.refresh, 200);
+    this.$bus.$on("itemImgLoad", this.itemImgLisener);
+  },
+  destroyed() {
+    this.$bus.$off("itemImgLoad", this.itemImgLisener);
   },
 };
 </script>
@@ -123,5 +160,9 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+}
+.back-top {
+  right: 50px;
+  bottom: 90px;
 }
 </style>

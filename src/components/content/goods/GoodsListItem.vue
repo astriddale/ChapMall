@@ -1,7 +1,7 @@
 <template>
   <!-- 封装商品数据 -->
   <div class="goods" @click="detailClick">
-    <img :src="goods.show.img" alt="" @load="itemImgLoad" />
+    <img :src="showImg" alt="" @load="itemImgLoad" />
     <div class="goods-info">
       <p class="title">{{ goods.title }}</p>
       <span class="price">￥{{ goods.price }}</span>
@@ -25,7 +25,12 @@ export default {
     },
     detailClick() {
       // console.log(this.goods)r
-      this.$router.push('/detail/' + this.goods.iid)
+      this.$router.push("/detail/" + this.goods.iid);
+    },
+  },
+  computed: {
+    showImg() {
+      return this.goods.image || this.goods.show.img;
     },
   },
 };

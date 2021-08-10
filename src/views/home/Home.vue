@@ -66,6 +66,7 @@ export default {
       tabOffsetTop: 0,
       isShowTab: false,
       positionY: 0,
+      itemImgLisener: null,
 
       //自定义数据类型
       data: [],
@@ -105,10 +106,11 @@ export default {
 
   mounted() {
     // console.log(this.$refs.scroll.refresh)
-    const refresh = deBounce(this.$refs.scroll.refresh, 200);
-    this.$bus.$on("itemImgLoad", () => {
+    this.itemImgLisener = () => {
       refresh();
-    });
+    };
+    const refresh = deBounce(this.$refs.scroll.refresh, 200);
+    this.$bus.$on("itemImgLoad", this.itemImgLisener);
   },
 
   activated() {
@@ -121,6 +123,7 @@ export default {
     // this.positionY = this.$refs.scroll.position.y;
     // 在这里获取到Bscroll对象的y的值
     this.positionY = this.$refs.scroll.scroll.y;
+    this.$bus.$off("itemImgLoad", this.itemImgLisener);
   },
 
   methods: {
@@ -189,6 +192,7 @@ export default {
   computed: {
     // 用来决定商品类型
     goodsType() {
+      // console.log(this.goods[this.currentType].list);
       return this.goods[this.currentType].list;
     },
   },
