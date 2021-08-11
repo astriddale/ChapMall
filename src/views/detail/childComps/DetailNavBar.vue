@@ -38,6 +38,7 @@ export default {
   methods: {
     centerClick(index) {
       this.currentIndex = index;
+      this.$emit("centerClick", index);
     },
     backClick() {
       //给返回按钮调用router的back方法返回到进入之前的页面

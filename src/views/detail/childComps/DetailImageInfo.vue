@@ -35,7 +35,7 @@ export default {
     imgLoad() {
       if (++this.counter === this.imgLength) {
         this.$emit("imgLoad");
-        console.log("详情页面的图片高度进行刷新了");
+        alert("数据加载中~~~");
       }
     },
   },

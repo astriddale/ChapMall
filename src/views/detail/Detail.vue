@@ -1,17 +1,23 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav-bar" />
+    <detail-nav-bar
+      class="detail-nav-bar"
+      @centerClick="centerClick"
+      ref="navbar"
+    />
     <scroll class="content" ref="scroll" :probe-type="3" @scrollTo="scroll">
       <detail-swiper :topImg="topImg" />
       <detail-info :detailGoods="detailGoods" />
       <detail-shop :shopInfo="shopInfo" />
       <detail-image-info :detailInfo="detailInfo" @imgLoad="imgLoad" />
-      <detail-params :itemParams="itemParams" />
-      <detail-rate :rateInfo="rateInfo" />
-      <goods-list :goodsList="detailRecommend" />
+      <detail-params :itemParams="itemParams" ref="params" />
+      <detail-rate :rateInfo="rateInfo" ref="rate" />
+      <goods-list :goodsList="detailRecommend" ref="recommend" />
     </scroll>
+    
 
     <back-top class="back-top" @click.native="backClick" v-show="isShow" />
+    <detail-bottom-bar />
   </div>
 </template>
 
@@ -26,6 +32,7 @@ import DetailParams from "./childComps/DetailParams.vue";
 import DetailRate from "./childComps/DetailRate.vue";
 import GoodsList from "components/content/goods/GoodsList";
 import BackTop from "components/content/backTop/BackTop.vue";
+import DetailBottomBar from './childComps/DetailBottomBar.vue';
 
 // 导入Bscroll组件
 import Scroll from "components/common/scroll/Scroll";
@@ -56,6 +63,10 @@ export default {
       detailRecommend: [],
       itemImgLisener: null,
       isShow: false,
+      positionY: [],
+      currentIndex: 0,
+      // 定义防抖函数的封装
+      getPositionY: null,
     };
   },
   components: {
@@ -69,6 +80,7 @@ export default {
     DetailRate,
     GoodsList,
     BackTop,
+    DetailBottomBar,
   },
   methods: {
     getDetailMultidata() {
@@ -114,6 +126,9 @@ export default {
     },
     imgLoad() {
       this.$refs.scroll.refresh();
+
+      // 调用经过防抖的函数，在created里面
+      this.getPositionY();
     },
     backClick() {
       this.$refs.scroll.scrollTo(0, 0, 500);
@@ -121,13 +136,41 @@ export default {
     scroll(position) {
       // 设置下移到指定位置时出现backtop组件
       this.isShow = -position.y > 1100;
-      // console.log(-position.y);
+
+      const positions = -position.y;
+      // 设置下滑到某个位置时，对应的模块名处于活跃状态
+      for (let index = 0; index < this.positionY.length - 1; index++) {
+        if (
+          this.currentIndex !== index &&
+          positions >= this.positionY[index] &&
+          positions < this.positionY[index + 1]
+        ) {
+          this.currentIndex = index;
+          this.$refs.navbar.currentIndex = this.currentIndex;
+        }
+      }
+    },
+    // navbar组件传过来的事件---控制navbar的点击
+    centerClick(index) {
+      // console.log(index);
+      this.$refs.scroll.scrollTo(0, -this.positionY[index], 500);
     },
   },
   created() {
     // console.log(this.$route);
     this.getDetailMultidata();
+
+    // 设置点击navbar跳转到对应位置的参数;然后在图像加载函数里进行调用
+    this.getPositionY = deBounce(() => {
+      this.positionY = [];
+      this.positionY.push(0);
+      this.positionY.push(this.$refs.params.$el.offsetTop);
+      this.positionY.push(this.$refs.rate.$el.offsetTop);
+      this.positionY.push(this.$refs.recommend.$el.offsetTop);
+      this.positionY.push(Number.MAX_VALUE);
+    }, 100);
   },
+  updated() {},
   mounted() {
     // console.log(this.$refs.scroll.refresh)
     this.itemImgLisener = () => {
@@ -159,10 +202,10 @@ export default {
   top: 44px;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 58px;
 }
 .back-top {
   right: 50px;
-  bottom: 90px;
+  bottom: 140px;
 }
 </style>
