@@ -30,6 +30,8 @@ export class DetailGoods {
     this.columns = columns;
     this.services = shopInfo.services;
     this.name = shopInfo.name;
+    this.lowPrice = itemInfo.lowPrice;
+    this.iid = itemInfo.iid;
   }
 }
 

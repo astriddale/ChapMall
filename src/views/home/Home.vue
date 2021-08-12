@@ -203,7 +203,7 @@ export default {
 #home {
   /* 因为下面的conteng属性设置了绝对定位距离上方44，所以padding属性就没必要使用了 */
   /* padding-top: 44px; */
-  height: 100vh;
+  height: calc(100vh - 44px - 49px);
   position: relative;
 }
 .nav-bar {
@@ -219,11 +219,12 @@ export default {
 }
 
 .content {
-  position: absolute;
+  /* position: absolute;
   top: 44px;
   bottom: 49px;
   left: 0;
-  right: 0;
+  right: 0; */
+  height: 100%;
 }
 .tab-show {
   position: relative;

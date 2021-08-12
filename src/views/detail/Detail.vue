@@ -14,10 +14,9 @@
       <detail-rate :rateInfo="rateInfo" ref="rate" />
       <goods-list :goodsList="detailRecommend" ref="recommend" />
     </scroll>
-    
 
     <back-top class="back-top" @click.native="backClick" v-show="isShow" />
-    <detail-bottom-bar />
+    <detail-bottom-bar @addToCart="addToCart" />
   </div>
 </template>
 
@@ -32,7 +31,7 @@ import DetailParams from "./childComps/DetailParams.vue";
 import DetailRate from "./childComps/DetailRate.vue";
 import GoodsList from "components/content/goods/GoodsList";
 import BackTop from "components/content/backTop/BackTop.vue";
-import DetailBottomBar from './childComps/DetailBottomBar.vue';
+import DetailBottomBar from "./childComps/DetailBottomBar.vue";
 
 // 导入Bscroll组件
 import Scroll from "components/common/scroll/Scroll";
@@ -52,6 +51,7 @@ import { deBounce } from "common/util/deBounce";
 
 export default {
   name: "Detail",
+
   data() {
     return {
       topImg: [],
@@ -69,6 +69,7 @@ export default {
       getPositionY: null,
     };
   },
+
   components: {
     DetailNavBar,
     DetailSwiper,
@@ -82,6 +83,7 @@ export default {
     BackTop,
     DetailBottomBar,
   },
+
   methods: {
     getDetailMultidata() {
       // 传入轮播图信息
@@ -95,7 +97,7 @@ export default {
           data.columns,
           data.shopInfo
         );
-
+        // console.log(data.itemInfo);
         // 传入商品详情店铺信息
         this.shopInfo = new DetailShopGoods(data.shopInfo);
 
@@ -115,24 +117,25 @@ export default {
             data.rate.list[0].user
           );
         }
-        // console.log(this.rateInfo);
-        // console.log(data.rate);
-        // console.log(data.rate.list[0])
+        // console.log(data);
       });
       getDetailRecommend().then((res) => {
         this.detailRecommend = res.data.data.list;
         // console.log(this.detailRecommend);
       });
     },
+
     imgLoad() {
       this.$refs.scroll.refresh();
 
       // 调用经过防抖的函数，在created里面
       this.getPositionY();
     },
+
     backClick() {
       this.$refs.scroll.scrollTo(0, 0, 500);
     },
+
     scroll(position) {
       // 设置下移到指定位置时出现backtop组件
       this.isShow = -position.y > 1100;
@@ -150,12 +153,25 @@ export default {
         }
       }
     },
+
     // navbar组件传过来的事件---控制navbar的点击
     centerClick(index) {
       // console.log(index);
       this.$refs.scroll.scrollTo(0, -this.positionY[index], 500);
     },
+
+    addToCart() {
+      const cartData = {};
+      cartData.image = this.topImg[0];
+      cartData.title = this.detailGoods.title;
+      cartData.desc = this.detailInfo.desc;
+      cartData.price = this.detailGoods.lowPrice;
+      cartData.id = this.detailGoods.iid;
+       console.log(cartData);
+      this.$store.dispatch("addCart", cartData);
+    },
   },
+
   created() {
     // console.log(this.$route);
     this.getDetailMultidata();
@@ -170,7 +186,9 @@ export default {
       this.positionY.push(Number.MAX_VALUE);
     }, 100);
   },
+
   updated() {},
+
   mounted() {
     // console.log(this.$refs.scroll.refresh)
     this.itemImgLisener = () => {
@@ -179,6 +197,7 @@ export default {
     const refresh = deBounce(this.$refs.scroll.refresh, 200);
     this.$bus.$on("itemImgLoad", this.itemImgLisener);
   },
+
   destroyed() {
     this.$bus.$off("itemImgLoad", this.itemImgLisener);
   },
@@ -190,7 +209,7 @@ export default {
   position: relative;
   z-index: 9;
   background-color: #fff;
-  height: 100vh;
+  height: calc(100vh - 44px - 58px);
 }
 .detail-nav-bar {
   position: relative;
@@ -198,11 +217,12 @@ export default {
   background-color: #fff;
 }
 .content {
-  position: absolute;
+  /* position: absolute;
   top: 44px;
   left: 0;
   right: 0;
-  bottom: 58px;
+  bottom: 58px; */
+  height: 100%;
 }
 .back-top {
   right: 50px;

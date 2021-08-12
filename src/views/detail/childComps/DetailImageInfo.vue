@@ -35,7 +35,7 @@ export default {
     imgLoad() {
       if (++this.counter === this.imgLength) {
         this.$emit("imgLoad");
-        alert("数据加载中~~~");
+        // alert("数据加载中~~~");
       }
     },
   },
