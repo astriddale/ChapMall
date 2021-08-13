@@ -167,7 +167,7 @@ export default {
       cartData.desc = this.detailInfo.desc;
       cartData.price = this.detailGoods.lowPrice;
       cartData.id = this.detailGoods.iid;
-       console.log(cartData);
+      //  console.log(cartData);
       this.$store.dispatch("addCart", cartData);
     },
   },

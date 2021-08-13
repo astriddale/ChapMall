@@ -1,6 +1,10 @@
 <template>
   <div class="cart-item-info">
     <div v-for="(item, index) in cartData" :key="index" class="cart-item">
+      <check-box
+        @click.native="checkButton(index)"
+        :class="{ check: $store.state.cartDataList[index].flag }"
+      />
       <div class="left">
         <img :src="item.image" alt="" />
       </div>
@@ -10,15 +14,17 @@
         <div class="price">￥{{ item.price }}</div>
       </div>
       <div class="right">
-        <button>-</button>
-        <span> 1 </span>
-        <button>+</button>
+        <button @click="inc(index)">-</button>
+        <span> {{ item.count }} </span>
+        <button @click="add(index)">+</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import CheckBox from "components/content/checkBox/CheckBox.vue";
+
 export default {
   name: "CartNavBar",
   props: {
@@ -28,6 +34,21 @@ export default {
         return [];
       },
     },
+  },
+  methods: {
+    inc(index) {
+      this.$emit("inc", index);
+    },
+    add(index) {
+      this.$emit("add", index);
+    },
+    checkButton(index) {
+      this.$store.state.cartDataList[index].flag =
+        !this.$store.state.cartDataList[index].flag;
+    },
+  },
+  components: {
+    CheckBox,
   },
 };
 </script>
@@ -40,7 +61,6 @@ export default {
   width: 80px;
   height: 120px;
   border-radius: 10px;
-  margin-left: 30px;
 }
 .cart-item {
   display: flex;
@@ -93,8 +113,12 @@ export default {
   line-height: 10px;
   background-color: #fff;
 }
-.right span{
+.right span {
   border-top: 1px solid rgb(247, 135, 200);
   border-bottom: 1px solid rgb(247, 135, 200);
+}
+.check {
+  background-color: rgb(247, 135, 200);
+  border: 1px solid rgb(247, 135, 200);
 }
 </style>

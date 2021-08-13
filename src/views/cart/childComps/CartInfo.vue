@@ -1,7 +1,7 @@
 <template>
   <div class="cart-info">
     <div v-if="isShowTest">
-      <cart-item-info :cart-data="cartDataList" />
+      <cart-item-info :cart-data="cartDataList" @inc="inc" @add="add" />
       <div></div>
     </div>
     <div class="not-goods" v-else>
@@ -27,8 +27,6 @@ export default {
   },
   created() {
     this.cartDataList = this.$store.state.cartDataList;
-    console.log(this.$store.state.cartDataList);
-    console.log(this.cartDataList.length);
   },
   computed: {
     isShowTest() {
@@ -36,6 +34,14 @@ export default {
         this.isShow = true;
       }
       return this.isShow;
+    },
+  },
+  methods: {
+    inc(index) {
+      this.$store.commit("inc", index);
+    },
+    add(index) {
+      this.$store.commit("add", index);
     },
   },
 };
