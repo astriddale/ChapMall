@@ -25,7 +25,10 @@ export default {
     },
     detailClick() {
       // console.log(this.goods)r
-      this.$router.push("/detail/" + this.goods.iid);
+      this.$toast.show("数据加载中~~~", 500);
+      setTimeout(() => {
+        this.$router.push("/detail/" + this.goods.iid);
+      }, 300);
     },
   },
   computed: {

@@ -17,6 +17,7 @@
 
     <back-top class="back-top" @click.native="backClick" v-show="isShow" />
     <detail-bottom-bar @addToCart="addToCart" />
+    <!-- <toast :message="message" :isShow="isShowToast" /> -->
   </div>
 </template>
 
@@ -32,6 +33,7 @@ import DetailRate from "./childComps/DetailRate.vue";
 import GoodsList from "components/content/goods/GoodsList";
 import BackTop from "components/content/backTop/BackTop.vue";
 import DetailBottomBar from "./childComps/DetailBottomBar.vue";
+// import Toast from "components/content/toast/Toast";
 
 // 导入Bscroll组件
 import Scroll from "components/common/scroll/Scroll";
@@ -48,6 +50,9 @@ import {
 
 // 导入防抖函数
 import { deBounce } from "common/util/deBounce";
+
+// 导入vuex的mapactions组件
+import { mapActions } from "vuex";
 
 export default {
   name: "Detail",
@@ -67,6 +72,9 @@ export default {
       currentIndex: 0,
       // 定义防抖函数的封装
       getPositionY: null,
+
+      // message: "",
+      // isShowToast: false,
     };
   },
 
@@ -82,9 +90,11 @@ export default {
     GoodsList,
     BackTop,
     DetailBottomBar,
+    // Toast,
   },
 
   methods: {
+    ...mapActions(["addCart"]),
     getDetailMultidata() {
       // 传入轮播图信息
       getDetailMultidata(this.$route.params.iid).then((res) => {
@@ -168,7 +178,11 @@ export default {
       cartData.price = this.detailGoods.lowPrice;
       cartData.id = this.detailGoods.iid;
       //  console.log(cartData);
-      this.$store.dispatch("addCart", cartData);
+      // this.$store.dispatch("addCart", cartData);
+      this.addCart(cartData).then((res) => {
+        // console.log(this.$toast)
+        this.$toast.show(res, 900);
+      });
     },
   },
 

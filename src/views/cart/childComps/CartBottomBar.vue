@@ -8,7 +8,7 @@
       <span>总计：{{ totalPrice }}</span>
     </div>
     <div class="right">
-      <span>去计算({{ totalCount }})</span>
+      <span @click="goComputer">去计算({{ totalCount }})</span>
     </div>
   </div>
 </template>
@@ -57,6 +57,12 @@ export default {
         });
       }
     },
+    goComputer() {
+      if (!this.totalCount) {
+        // console.log(this.totalCount)
+        this.$toast.show("请选择商品");
+      }
+    },
   },
 };
 </script>
@@ -65,11 +71,14 @@ export default {
 .cart-bottom-bar {
   position: relative;
   z-index: 9;
-  height: 44px;
+  height: 49px;
   display: flex;
   background-color: #eeeeee;
   font-size: 15px;
   color: rgb(44, 41, 41);
+  bottom: -5px;
+  left: 0;
+  right: 0;
 }
 .cart-bottom-bar .left {
   width: 80px;

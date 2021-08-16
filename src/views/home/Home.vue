@@ -160,8 +160,10 @@ export default {
       this.$refs.scroll.scrollTo(0, 0);
     },
     loadMore() {
-      this.getHomeGoods(this.currentType);
-      console.log("数据加载中~~~");
+      this.$toast.show("加载更多商品中~~~");
+      setTimeout(() => {
+        this.getHomeGoods(this.currentType);
+      }, 1000);
     },
     imgLoad() {
       this.tabOffsetTop = this.$refs.tabctron.$el.offsetTop;

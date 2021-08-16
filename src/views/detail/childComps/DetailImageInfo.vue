@@ -10,7 +10,7 @@
         {{ item.key }}
       </div>
       <div v-for="(img, index) in item.list" :key="index" class="images">
-        <img :src="img" alt="" @load="imgLoad" />
+        <img v-lazy="img" alt="" @load="imgLoad" />
       </div>
     </div>
   </div>

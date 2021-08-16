@@ -5,6 +5,7 @@
       <cart-info />
     </scroll>
     <cart-bottom-bar />
+    
   </div>
 </template>
 
@@ -33,7 +34,7 @@ export default {
 
 <style scoped>
 .cart {
-  height: calc(100vh - 44px - 49px - 44px);
+  height: calc(100vh - 44px - 49px - 49px);
 }
 .cart .nav-bar {
   position: relative;

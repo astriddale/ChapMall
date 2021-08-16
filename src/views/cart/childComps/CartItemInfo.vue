@@ -77,7 +77,7 @@ export default {
   position: relative;
 }
 .center .title {
-  width: 180px;
+  width: 160px;
   overflow: hidden;
   /* 将多余的文字按照...的方式进行显示 */
   text-overflow: ellipsis;
@@ -86,7 +86,7 @@ export default {
   margin: 5px 10px;
 }
 .center .desc {
-  height: 35px;
+  height: 32px;
   overflow: hidden;
   /* 将多余的文字按照...的方式进行显示 */
   text-overflow: ellipsis;
@@ -106,16 +106,15 @@ export default {
   margin-top: 103px;
 }
 .right button {
-  width: 30px;
+  width: 15px;
   height: 19px;
   border: 1px solid rgb(247, 135, 200);
-  font-size: 16px;
+  font-size: 18px;
   line-height: 10px;
   background-color: #fff;
 }
 .right span {
-  border-top: 1px solid rgb(247, 135, 200);
-  border-bottom: 1px solid rgb(247, 135, 200);
+  font-size: 16px;
 }
 .check {
   background-color: rgb(247, 135, 200);
