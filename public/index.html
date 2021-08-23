@@ -1,17 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>logo.png">
-    <title>购物街</title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but xmgmail doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>logo.png">
+  <title>购物街</title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but xmgmail doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+
+
+  <!-- <script>
+    function countMax(str) {
+
+      let hash = {}
+      for (let i = 0; i < str.length; i++) {
+        if (hash[str[i]]) {
+          hash[str[i]]++
+        } else {
+          hash[str[i]] = 1
+        }
+      }
+
+      let key = Object.keys(hash)
+      // console.log(hash.length)
+      let maxVal = -1;
+      let maxKey = [];
+      let maxK = ''
+      for (let j = 0; j < key.length; j++) {
+        if (hash[key[j]] > maxVal) {
+          maxVal = hash[key[j]]
+        }
+      }
+      for (let k of key) {
+        if (hash[k] == maxVal) {
+          maxKey.push(k)
+        }
+      }
+      console.log(maxKey)
+    }
+
+
+    countMax("abbbcddeee")
+
+  </script> -->
+</body>
+
 </html>
