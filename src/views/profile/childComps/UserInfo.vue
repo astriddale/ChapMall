@@ -9,9 +9,9 @@
           ></use>
         </svg>
       </slot>
-      <div class="login-info left">
+      <div v-if="isShow" class="login-info left">
         <slot name="user-nickname">
-          <div>登录/注册</div>
+          <div @click="login">登录/注册</div>
         </slot>
         <div class="phone">
           <span>
@@ -25,6 +25,11 @@
           </span>
           <slot name="user-phone">暂无绑定手机号</slot>
         </div>
+      </div>
+      <div v-else class="logined">
+        <div>用户名：{{ userName }}</div>
+        <div>手机号：{{ userPhone }}</div>
+        <button @click="retire">退出登录</button>
       </div>
       <svg data-v-735ff1be="" fill="#fff" class="arrow-svg right">
         <use
@@ -40,6 +45,27 @@
 <script>
 export default {
   name: "UserInfo",
+  data() {
+    return {
+      userName: localStorage.getItem("username"),
+      userPhone: localStorage.getItem("email"),
+    };
+  },
+  computed: {
+    isShow() {
+      return this.$store.state.changed;
+    },
+  },
+  methods: {
+    login() {
+      this.$router.replace("/login");
+    },
+    retire() {
+      this.$store.state.changed = true;
+      // this.$store.commit("changeLogin", false);
+      console.log(this.$store.state.changed);
+    },
+  },
 };
 </script>
 
@@ -87,5 +113,10 @@ export default {
   height: 18px;
   left: -15px;
   top: 0px;
+}
+.logined {
+  position: relative;
+  top: 15px;
+  left: 20px;
 }
 </style>

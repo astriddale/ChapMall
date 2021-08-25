@@ -6,6 +6,8 @@ const Category = () => import('views/category/Category')
 const Cart = () => import('views/cart/Cart')
 const Profile = () => import('views/profile/Profile')
 const Detail = () => import('views/detail/Detail')
+const Login = () => import('views/profile/childComps/Login')
+const Register = () => import('views/profile/childComps/Register')
 
 // 1.安装VueRouter
 Vue.use(VueRouter)
@@ -34,6 +36,9 @@ const routes = [{
   {
     path: '/detail/:iid',
     component: Detail
+  }, {
+    path: '/login',
+    component: Login
   }
 ]
 

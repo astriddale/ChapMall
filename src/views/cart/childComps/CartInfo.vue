@@ -13,6 +13,7 @@
 
 <script>
 import CartItemInfo from "./CartItemInfo.vue";
+import { mapMutations } from "vuex";
 
 export default {
   name: "CartInfo",
@@ -37,11 +38,18 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      inca: "inc",
+      adda: "add",
+    }),
+
     inc(index) {
-      this.$store.commit("inc", index);
+      // this.$store.commit("inc", index);
+      this.inca(index);
     },
     add(index) {
-      this.$store.commit("add", index);
+      // this.$store.commit("add", index);
+      this.adda(index);
     },
   },
 };

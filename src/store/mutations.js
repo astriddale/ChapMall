@@ -23,5 +23,8 @@ export default {
   },
   add(state, payload) {
     state.cartDataList[payload].count++;
+  },
+  changeLogin(state, payload) {
+    state.changed = payload;
   }
 }

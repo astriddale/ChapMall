@@ -51,7 +51,9 @@ export default {
       ],
     };
   },
-  mounted: function () {},
+  mounted: function () {
+    this.$store.commit("changeLogin", false);
+  },
 };
 </script>
 
