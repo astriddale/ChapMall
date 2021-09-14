@@ -1,6 +1,6 @@
-#基于Vue2.5和Vue CLI3.0开发的模拟商城项目
-
+# 基于Vue2.5和Vue CLI3.0开发的模拟商城项目
 ## Project setup
+
 ```
 npm install
 ```
